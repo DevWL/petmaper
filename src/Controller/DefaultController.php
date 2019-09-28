@@ -13,25 +13,34 @@ class DefaultController extends Controller
     /**
      * @Route("/")
      */
-    public function homepage(Request $request)
+    public function homePage(Request $request)
     {
         return new Response("hello you! You are the SYMFONY MASTER!");
         // return $this->render('index.html.twig');
     }
 
     /**
-     * @Route("/cats")
+     * @Route("/contact")
      */
-    public function catspage(Request $request)
+    public function contactPage(Request $request)
     {
         return new Response("This is the cat page");
         // return $this->render('index.html.twig');
     }
 
     /**
-     * @Route("/dogs")
+     * @Route("/about")
      */
-    public function dogspage(Request $request)
+    public function aboutPage(Request $request)
+    {
+        return new Response("This is the dog page");
+        // return $this->render('index.html.twig');
+    }
+
+    /**
+     * @Route("/search")
+     */
+    public function searchPage(Request $request)
     {
         return new Response("This is the dog page");
         // return $this->render('index.html.twig');
@@ -40,7 +49,7 @@ class DefaultController extends Controller
     /**
      * @Route("/blog/{slug}")
      */
-    public function articlespage($slug, Request $request)
+    public function category($slug, Request $request)
     {
         return new Response(sprintf("This is about %s", $slug));
         // return $this->render('index.html.twig');
