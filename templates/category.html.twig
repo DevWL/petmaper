@@ -1,0 +1,44 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {{ slug }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+    
+{% block body %}
+    <h1>This is about {{ slug }} but from twig template</h1>
+    <div class="subjects">
+            {% for subject in subjects %}
+            <div class="subject" style="width:33.333%; float: left; height: 400px; padding: 20px; overflow: hidden; box-sizing: border-box;">
+                <div class="desc" style="width: 100%; padding: 5px; box-sizing: border-box;">
+                    <span class="desc-label">name:</span> {{ subject.name }} |
+                    <span class="desc-label">age:</span> {{ subject.age }} |
+                    <span class="desc-label">breed:</span> {{ subject.breed }} |
+                    <span class="desc-label">img:</span> <a href="#">
+                        <button class="btn btn-imageCount">{{ subject.images|length }}</button>
+                    </a>
+                </div> 
+                <div class="desc-images">
+                    {% for url in subject.images %}
+                    <img class="subject-img" style="height: 200px;" src="{{ url }}" alt="Dog {{ subject.breed }} age {{ subject.age }}">
+                    {% endfor %}
+                </div>
+                <br> 
+                <div class="desc-text">
+                    {{ subject.description|length > 250 ? subject.description|striptags|slice(0, 250) ~ '...' : subject.description|raw }}
+                    {% if subject.description|length > 250 %}
+                        <button class="btn" style="float: right; margin: 5px;">read more</button>
+                    {% endif %}
+                    
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
