@@ -104,7 +104,7 @@ class DefaultController extends AbstractController
                     ]
             ],
         ];
-
+        
         return $this->render('category.html.twig', 
             [
                 "slug" => strtoupper($slug),

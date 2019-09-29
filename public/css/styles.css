@@ -1,0 +1,27 @@
+body{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+}
+.btn{
+    border-radius: 100px;
+    border: 1px solid rgba(0, 0, 0, 0.06);;
+    background-color: rgba(0, 0, 0, 0);
+}
+.btn-imageCount{
+    background-color: rgba(255, 0, 0, 1);
+    color: white;
+    cursor:pointer
+}
+.subject:nth-child(even){
+    background-color: rgb(245, 245, 245);
+}    
+.desc .desc-label{
+    font-size: 0.7em;
+}
+.desc-text{
+    font-size: 0.7em;
+}
+.desc-images{
+    overflow-x: auto;
+    white-space: nowrap;
+}

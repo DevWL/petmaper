@@ -9,6 +9,7 @@
 {% endblock %}
     
 {% block body %}
+    {{ dump() }}
     <h1>This is about {{ slug }} but from twig template</h1>
     <div class="subjects">
             {% for subject in subjects %}
@@ -42,3 +43,4 @@
 {% block javascripts %}
     {{ parent() }}
 {% endblock %}
+
