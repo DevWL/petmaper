@@ -11,6 +11,11 @@
 {% block body %}
     {{ dump() }}
     <h1>This is about {{ slug }} but from twig template</h1>
+    {% for route in routes %}
+        <a href="{{ path(route.route, {'slug': 'dog'}) }}">{{ route.name }}</a>
+    {% endfor %}
+    
+    
     <div class="subjects">
             {% for subject in subjects %}
             <div class="subject" style="width:33.333%; float: left; height: 400px; padding: 20px; overflow: hidden; box-sizing: border-box;">
