@@ -3,16 +3,25 @@
 namespace App\Controller;
 
 // use Symfony\Component\Routing\Route; // this is not the Route declaration we need for annotation
+// use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // !depriciated
+// use Symfony\Bundle\FrameworkBundle\Controller\Controller; // use AbstractController
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-// use Symfony\Bundle\FrameworkBundle\Controller\Controller; // use AbstractController
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route; // new!
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DefaultController extends AbstractController
 {
+    public $routes = [
+        ['route'=>'home', 'name'=>'home'],
+        ['route'=>'contact', 'name'=>'contact'],
+        ['route'=>'about', 'name'=>'about'],
+        ['route'=>'search', 'name'=>'search'],
+        ['route'=>'category', 'name'=>'category'],
+    ];
+
     /**
-     * @Route("/")
+     * @Route("/", name="home")
      */
     public function homePage(Request $request)
     {
@@ -21,7 +30,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/contact")
+     * @Route("/contact", name="contact")
      */
     public function contactPage(Request $request)
     {
@@ -30,7 +39,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/about")
+     * @Route("/about", name="about")
      */
     public function aboutPage(Request $request)
     {
@@ -39,7 +48,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/search")
+     * @Route("/search", name="search")
      */
     public function searchPage(Request $request)
     {
@@ -48,7 +57,7 @@ class DefaultController extends AbstractController
     }
     
     /**
-     * @Route("/category/{slug}")
+     * @Route("/category/{slug}", name="category")
      */
     public function category($slug, Request $request)
     {
@@ -108,7 +117,8 @@ class DefaultController extends AbstractController
         return $this->render('category.html.twig', 
             [
                 "slug" => strtoupper($slug),
-                "subjects" => $subjects
+                "subjects" => $subjects,
+                "routes" => $this->routes
             ]
         );
     }
