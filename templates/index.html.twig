@@ -11,6 +11,8 @@
     {% for route in routes %}
         <a href="{{ path(route.route, {'slug': 'dog'}) }}">{{ route.name }}</a>
     {% endfor %}
+        <a href="{{ path('animal', {'slug': 'Daizy'}) }}">animal of the month</a>
+    
     
     
     <div class="subjects">
@@ -20,8 +22,8 @@
                     <span class="desc-label">name:</span> {{ subject.name }} |
                     <span class="desc-label">age:</span> {{ subject.age }} |
                     <span class="desc-label">breed:</span> {{ subject.breed }} |
-                    <button class="btn btn-like">
-                        <i class="far fa-heart"></i>
+                    <button href="{{ path('api_heart_toggle', {slug: 'something'}) }}" class="btn btn-like">
+                        <i class="fa-heart"></i>
                         <span class="like">
                              {{ subject.likes }}
                         </span>

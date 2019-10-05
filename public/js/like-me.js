@@ -27,19 +27,46 @@ let wrapper = (function(){
             let btnObject = {
                 clickedState : false,
                 btn: button,
-                loadState(){/*..TO DO..*/},
+                icon: button.querySelector('i'),
+                loadState(){
+                    // load api slug url from twig href attr
+                    let url = this.btn.getAttribute('href');
+                    let link = this.btn.querySelector(".like");
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                    }).done(function(data){
+                        link.innerHTML = data.hearts;
+                        this.clickedState = data.userVouted;
+                        this.loadHeartIcon();
+                    }.bind(this));
+                    
+                },
+                loadHeartIcon(){
+                    if(this.clickedState === false){
+                        this.icon.classList.toggle('far');
+                    }else if(this.clickedState === true){
+                        this.icon.classList.toggle('fas');
+                    }
+                },
+                toggleHeartIcon(){
+                    this.icon.classList.toggle('far');
+                    this.icon.classList.toggle('fas');
+                },
                 actionVoute(){
                     let link = this.btn.querySelector(".like");
                     console.log('link: ', link);
 
                     let value = parseInt(link.innerHTML);
                     link.innerHTML = value + 1;
+                    this.toggleHeartIcon();
                 },
                 actionUnvote(){
                     let link = this.btn.querySelector(".like");
                     console.log('link: ', link);
                     let value = parseInt(link.innerHTML);
                     link.innerHTML = value - 1;
+                    this.toggleHeartIcon();
                 },
                 addClickEvent(){
                     button.addEventListener("click", (e) => {

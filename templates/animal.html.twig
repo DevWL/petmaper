@@ -12,19 +12,18 @@
     {{ dump() }}
     <h1>This is about {{ slug }} but from twig template</h1>
     {% for route in routes %}
-        <a href="{{ path(route.route, {'slug': 'dog'}) }}">{{ route.name }}</a>
+        <a href="{{ path(route.route) }}">{{ route.name }}</a>
     {% endfor %}
     
     
     <div class="subjects">
-            {% for subject in subjects %}
-            <div class="subject" style="width:33.333%; float: left; height: 400px; padding: 20px; overflow: hidden; box-sizing: border-box;">
+            <div class="subject" style="width:100%; padding: 20px; overflow: hidden; box-sizing: border-box;">
                 <div class="desc" style="width: 100%; padding: 5px; box-sizing: border-box;">
                     <span class="desc-label">name:</span> {{ subject.name }} |
                     <span class="desc-label">age:</span> {{ subject.age }} |
                     <span class="desc-label">breed:</span> {{ subject.breed }} |
-                    <button class="btn btn-like">
-                        <i class="far fa-heart"></i>
+                    <button href="{{ path('api_heart_toggle', {slug: subject.slug}) }}" class="btn btn-like">
+                        <i class="fa-heart"></i>
                         <span class="like">
                              {{ subject.likes }}
                         </span>
@@ -40,14 +39,9 @@
                 </div>
                 <br> 
                 <div class="desc-text">
-                    {{ subject.description|length > 250 ? subject.description|striptags|slice(0, 250) ~ '...' : subject.description|raw }}
-                    {% if subject.description|length > 250 %}
-                        <button class="btn" style="float: right; margin: 5px;">read more</button>
-                    {% endif %}
-                    
+                    {{ subject.description|raw }}                    
                 </div>
             </div>
-        {% endfor %}
     </div>
 {% endblock %}
 
