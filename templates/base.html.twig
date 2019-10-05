@@ -5,6 +5,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link href="https://fonts.googleapis.com/css?family=Montserrat:300&display=swap" rel="stylesheet">
         {% block stylesheets %}
+            <script src="https://kit.fontawesome.com/65fe9efb14.js" crossorigin="anonymous"></script>
             <link rel="stylesheet" href="{{ asset('/css/styles.css') }}">
         {% endblock %}
     </head>
@@ -12,6 +13,13 @@
         <div class="container" style="width: 70%; margin: 0 auto;">
             {% block body %}{% endblock %}
         </div>
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            <script
+                src="https://code.jquery.com/jquery-3.4.1.min.js"
+                integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+                crossorigin="anonymous">
+            </script>
+            <script src="/js/like-me.js"></script>
+        {% endblock %}
     </body>
 </html>
