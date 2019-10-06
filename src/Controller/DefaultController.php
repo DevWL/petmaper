@@ -6,6 +6,8 @@ namespace App\Controller;
 // use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // !depriciated
 // use Symfony\Bundle\FrameworkBundle\Controller\Controller; // use AbstractController
 
+use App\Service\FakeDataLoader;
+use App\Service\MyFirstService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,71 +29,13 @@ class DefaultController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function homePage(Request $request)
+    public function homePage(Request $request, FakeDataLoader $fakeDataLoader)
     {
-        $subjects = [
-            [
-                'id' => '12312',
-                'slug' => 'filipek',
-                'likes' => '0',
-                'name' => 'Filipek',
-                'category' => 'dog',
-                'breed' => 'mongrel',
-                'images' => [
-                    'https://hellobark.com/wp-content/uploads/shiro-akita-2.jpg',
-                    'https://hellobark.com/wp-content/uploads/shiro-akita-1.jpg',
-                ],
-                'description' => "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi. <br> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi. <br>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi. ",
-                'age' => 20,
-                'geospetial' =>
-                    [
-                        'lat' => 19.7223472, 'long' => 56.12342344
-                    ]
-            ],
-            [
-                'id' => '23423',
-                'slug' => 'diana',
-                'likes' => '0',
-                'name' => 'Diana',
-                'category' => 'dog',
-                'breed' => 'mongrel',
-                'images' => [
-                    'https://psy-pies.com/pliki/image/foto/duze/foto5651a2420a868.jpg',
-                    'https://psy-pies.com/pliki/image/artykuly/hodowla/duze/wystawa-psow3160.jpg',
-                    'https://psy-pies.com/pliki/image/artykuly/nasz-pies/duze/rodzina-owczarkow-niemieckich3130.jpg',
-                ],
-                'description' => "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi.",
-                'age' => 21,
-                'geospetial' =>
-                    [
-                        'lat' => 45.7223472, 'long' => 21.12342344
-                    ]
-            ],
-            [
-                'id' => '33423',
-                'slug' => 'dejzi',
-                'likes' => '0',
-                'name' => 'Dejzi',
-                'category' => 'dog',
-                'breed' => 'mongrel',
-                'images' => [
-                    'https://apollo-ireland.akamaized.net/v1/files/ucx9e1q0ni101-PL/image;s=644x461',
-                    'https://apollo-ireland.akamaized.net/v1/files/nrlaxjecip0m1-PL/image;s=644x461',
-                    'https://apollo-ireland.akamaized.net/v1/files/amk0nvt9bcgw-PL/image;s=644x461',
-                    'https://apollo-ireland.akamaized.net/v1/files/o8uu1oei8kpb1-PL/image;s=644x461',
-                ],
-                'description' => "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi.<br>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi.<br>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi.<br>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi.",
-                'age' => 31,
-                'geospetial' =>
-                    [
-                        'lat' => 45.7223472, 'long' => 21.12342344
-                    ]
-            ],
-        ];
+
         
         return $this->render('index.html.twig', 
             [
-                "subjects" => $subjects,
+                "subjects" => $fakeDataLoader->loadIndexData(),
                 "routes" => $this->routes
             ]
         );
@@ -127,45 +71,17 @@ class DefaultController extends AbstractController
     /**
      * @Route("/animal/{slug}", name="animal")
      */
-    public function animal($slug, Request $request, LoggerInterface $logger, Environment $twigEnvironment, AdapterInterface $cache)
+    public function animal($slug, LoggerInterface $logger, MyFirstService $myFirstService, FakeDataLoader $fakeDataLoader)
     {
-        $subject = [
-            'id' => '33423',
-            'slug' => $slug,
-            'likes' => '0',
-            'name' => $slug,
-            'category' => 'dog',
-            'breed' => 'mongrel',
-            'images' => [
-                'https://apollo-ireland.akamaized.net/v1/files/ucx9e1q0ni101-PL/image;s=644x461',
-                'https://apollo-ireland.akamaized.net/v1/files/nrlaxjecip0m1-PL/image;s=644x461',
-                'https://apollo-ireland.akamaized.net/v1/files/amk0nvt9bcgw-PL/image;s=644x461',
-                'https://apollo-ireland.akamaized.net/v1/files/o8uu1oei8kpb1-PL/image;s=644x461',
-            ],
-            'description' => "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi.<br>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi.<br>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi.<br>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem, reprehenderit porro quo nulla, in id explicabo quidem optio repellendus dolorum, aperiam voluptatum labore ducimus magni debitis tempore provident laborum. Commodi.",
-            'age' => 11,
-            'geospetial' =>
-                [
-                    'lat' => 45.7223472, 'long' => 21.12342344
-                ]
-        ];
 
-        $logger->info("################ looking at -- {$slug} -- {$subject['category']} ################");
-        
-         
-        $item = $cache->getItem('animal.html.twig'.md5(json_encode($subject)));
-        if(!$item->isHit()) {
-            $item->set($twigEnvironment->render('animal.html.twig', 
-            [
-                "slug" => strtoupper($slug),
-                "subject" => $subject,
-                "routes" => $this->routes
-            ]
-            ));
-            $cache->save($item);
-        }
+        $subject = $fakeDataLoader->loadAnimalData($slug);
 
-        $html = $item->get();
+        $html = $myFirstService->getAnimalTwig(
+            $slug, 
+            $subject, 
+            $this->routes,
+        );
+
         return new Response($html);
 
         // return $this->render('animal.html.twig', 
@@ -184,7 +100,7 @@ class DefaultController extends AbstractController
      */
     public function apiHart(Request $request)
     {
-        //TODO - heart/unheart the article by slug or id...
+        // TODO - heart/unheart the article by slug or id...
         // return new Response(\json_encode(['hearts'=> \rand(0,100)]));
         // return new JsonResponse(['hearts' => \rand(0,100)]);
         return $this->json([
