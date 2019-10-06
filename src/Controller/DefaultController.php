@@ -5,11 +5,15 @@ namespace App\Controller;
 // use Symfony\Component\Routing\Route; // this is not the Route declaration we need for annotation
 // use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // !depriciated
 // use Symfony\Bundle\FrameworkBundle\Controller\Controller; // use AbstractController
+
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route; // new!
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Twig\Environment;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class DefaultController extends AbstractController
 {
@@ -123,7 +127,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/animal/{slug}", name="animal")
      */
-    public function animal($slug, Request $request)
+    public function animal($slug, Request $request, LoggerInterface $logger, Environment $twigEnvironment, AdapterInterface $cache)
     {
         $subject = [
             'id' => '33423',
@@ -145,14 +149,32 @@ class DefaultController extends AbstractController
                     'lat' => 45.7223472, 'long' => 21.12342344
                 ]
         ];
+
+        $logger->info("################ looking at -- {$slug} -- {$subject['category']} ################");
         
-        return $this->render('animal.html.twig', 
+         
+        $item = $cache->getItem('animal.html.twig'.md5(json_encode($subject)));
+        if(!$item->isHit()) {
+            $item->set($twigEnvironment->render('animal.html.twig', 
             [
                 "slug" => strtoupper($slug),
                 "subject" => $subject,
                 "routes" => $this->routes
             ]
-        );
+            ));
+            $cache->save($item);
+        }
+
+        $html = $item->get();
+        return new Response($html);
+
+        // return $this->render('animal.html.twig', 
+        //     [
+        //         "slug" => strtoupper($slug),
+        //         "subject" => $subject,
+        //         "routes" => $this->routes
+        //     ]
+        // );
     }
 
 
