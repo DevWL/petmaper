@@ -92,5 +92,15 @@ class FakeDataLoader
         ];
         return $subject;
     }
+
+    public function loadRoutes(){
+        return $routes = [
+            ['route'=>'home', 'name'=>'home'],
+            ['route'=>'contact', 'name'=>'contact'],
+            ['route'=>'about', 'name'=>'about'],
+            ['route'=>'search', 'name'=>'search'],
+        ];
+    
+    }
     
 }

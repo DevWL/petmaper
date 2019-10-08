@@ -19,24 +19,15 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class DefaultController extends AbstractController
 {
-    public $routes = [
-        ['route'=>'home', 'name'=>'home'],
-        ['route'=>'contact', 'name'=>'contact'],
-        ['route'=>'about', 'name'=>'about'],
-        ['route'=>'search', 'name'=>'search'],
-    ];
-
     /**
      * @Route("/", name="home")
      */
-    public function homePage(Request $request, FakeDataLoader $fakeDataLoader)
+    public function homePage(FakeDataLoader $fakeDataLoader)
     {
-
-        
         return $this->render('index.html.twig', 
             [
                 "subjects" => $fakeDataLoader->loadIndexData(),
-                "routes" => $this->routes
+                "routes" => $fakeDataLoader->loadRoutes()
             ]
         );
     }
@@ -74,12 +65,10 @@ class DefaultController extends AbstractController
     public function animal($slug, LoggerInterface $logger, MyFirstService $myFirstService, FakeDataLoader $fakeDataLoader)
     {
 
-        $subject = $fakeDataLoader->loadAnimalData($slug);
-
         $html = $myFirstService->getAnimalTwig(
             $slug, 
-            $subject, 
-            $this->routes,
+            $subject = $fakeDataLoader->loadAnimalData($slug), 
+            $routes = $fakeDataLoader->loadRoutes(),
         );
 
         return new Response($html);

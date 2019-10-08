@@ -16,11 +16,12 @@ class MyFirstService
      * @param LoggerInterface $logger
      * @return void
      */
-    public function __construct(Environment $twigEnvironment, AdapterInterface $cache, LoggerInterface $logger)
+    public function __construct(Environment $twigEnvironment, AdapterInterface $cache, LoggerInterface $devwllogger, $currentEnv)
     {
         $this->twigEnvironment = $twigEnvironment;
         $this->cache = $cache;
-        $this->logger = $logger;
+        $this->logger = $devwllogger;
+        $this->env = $currentEnv;
     }
 
     /**
@@ -35,6 +36,17 @@ class MyFirstService
     {
         // log
         $this->logger->info("################ looking at -- {$slug} -- {$subject['category']} ################");
+
+        // skip cache in dev env
+        if($this->env === 'dev'){
+            return $this->twigEnvironment->render('animal.html.twig', 
+            [
+                "slug" => strtoupper($slug),
+                "subject" => $subject,
+                "routes" => $routes
+            ]
+            );
+        }
 
         // save to, or load from cache
         $item = $this->cache->getItem('animal.html.twig'.md5(json_encode($subject)));
